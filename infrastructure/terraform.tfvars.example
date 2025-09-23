@@ -22,3 +22,12 @@ common_tags = {
   ManagedBy   = "terraform"
   Owner       = "your-name"
 }
+
+# Auto Scaling Configuration
+min_capacity = 1
+max_capacity = 10
+cpu_target_value = 70
+memory_target_value = 80
+requests_per_target = 1000
+scale_in_cooldown = 300
+scale_out_cooldown = 300

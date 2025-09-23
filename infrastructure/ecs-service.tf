@@ -88,6 +88,40 @@ module "ecs_service" {
   cpu    = 256
   memory = 512
 
+  # Auto Scaling Configuration
+  desired_count                  = var.min_capacity
+  ignore_task_definition_changes = false
+  force_new_deployment           = true
+
+  # Built-in Auto Scaling
+  autoscaling_min_capacity = var.min_capacity
+  autoscaling_max_capacity = var.max_capacity
+
+  autoscaling_policies = {
+    cpu = {
+      policy_type = "TargetTrackingScaling"
+      target_tracking_scaling_policy_configuration = {
+        predefined_metric_specification = {
+          predefined_metric_type = "ECSServiceAverageCPUUtilization"
+        }
+        target_value       = var.cpu_target_value
+        scale_in_cooldown  = var.scale_in_cooldown
+        scale_out_cooldown = var.scale_out_cooldown
+      }
+    }
+    memory = {
+      policy_type = "TargetTrackingScaling"
+      target_tracking_scaling_policy_configuration = {
+        predefined_metric_specification = {
+          predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+        }
+        target_value       = var.memory_target_value
+        scale_in_cooldown  = var.scale_in_cooldown
+        scale_out_cooldown = var.scale_out_cooldown
+      }
+    }
+  }
+
   # Container definition(s)
   container_definitions = {
     nodejs-app = {
@@ -119,18 +153,6 @@ module "ecs_service" {
           value = var.app_port
         }
       ]
-    }
-  }
-
-  service_connect_configuration = {
-    namespace = aws_service_discovery_http_namespace.this.arn
-    service = {
-      client_alias = {
-        port     = var.app_port
-        dns_name = "${var.project_name}-service"
-      }
-      port_name      = "nodejs-app"
-      discovery_name = "${var.project_name}-service"
     }
   }
 

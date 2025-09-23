@@ -55,3 +55,49 @@ variable "common_tags" {
     ManagedBy   = "terraform"
   }
 }
+#####
+###########################################################################
+# Auto Scaling Variables
+################################################################################
+
+variable "min_capacity" {
+  description = "Minimum number of tasks"
+  type        = number
+  default     = 1
+}
+
+variable "max_capacity" {
+  description = "Maximum number of tasks"
+  type        = number
+  default     = 10
+}
+
+variable "cpu_target_value" {
+  description = "Target CPU utilization percentage for auto scaling"
+  type        = number
+  default     = 70
+}
+
+variable "memory_target_value" {
+  description = "Target memory utilization percentage for auto scaling"
+  type        = number
+  default     = 80
+}
+
+variable "requests_per_target" {
+  description = "Target number of requests per target for auto scaling"
+  type        = number
+  default     = 1000
+}
+
+variable "scale_in_cooldown" {
+  description = "Cooldown period (in seconds) for scale in operations"
+  type        = number
+  default     = 300
+}
+
+variable "scale_out_cooldown" {
+  description = "Cooldown period (in seconds) for scale out operations"
+  type        = number
+  default     = 300
+}

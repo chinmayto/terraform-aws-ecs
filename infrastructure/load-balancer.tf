@@ -83,12 +83,5 @@ resource "aws_lb_listener" "web" {
 
   tags = var.common_tags
 }
-################################################################################
-# Service Discovery
-################################################################################
-resource "aws_service_discovery_http_namespace" "this" {
-  name        = var.project_name
-  description = "Service discovery namespace for ${var.project_name}"
-
-  tags = var.common_tags
-}
+# Service Discovery namespace removed - not needed for basic ALB setup
+# Can be added later if service-to-service communication is required

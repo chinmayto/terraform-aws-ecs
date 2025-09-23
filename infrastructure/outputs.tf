@@ -52,3 +52,16 @@ output "application_url" {
   description = "URL to access the application"
   value       = "http://${aws_lb.main.dns_name}"
 }
+################################################################################
+# Auto Scaling Outputs
+################################################################################
+
+output "scaling_configuration" {
+  description = "Current auto scaling configuration"
+  value = {
+    min_capacity  = var.min_capacity
+    max_capacity  = var.max_capacity
+    cpu_target    = var.cpu_target_value
+    memory_target = var.memory_target_value
+  }
+}
