@@ -1,4 +1,6 @@
+################################################################################
 # Security Group for ECS Service
+################################################################################
 resource "aws_security_group" "ecs_service" {
   name_prefix = "${var.project_name}-ecs-service"
   vpc_id      = module.vpc.vpc_id
@@ -22,7 +24,9 @@ resource "aws_security_group" "ecs_service" {
   })
 }
 
+################################################################################
 # ECS Task Definition
+################################################################################
 resource "aws_ecs_task_definition" "nodejs_app" {
   family                   = "${var.project_name}-task"
   network_mode             = "awsvpc"
@@ -71,7 +75,9 @@ resource "aws_ecs_task_definition" "nodejs_app" {
   tags = var.common_tags
 }
 
+################################################################################
 # ECS Service
+################################################################################
 module "ecs_service" {
   source  = "terraform-aws-modules/ecs/aws//modules/service"
   version = "~> 5.0"
