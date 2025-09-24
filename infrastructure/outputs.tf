@@ -48,6 +48,11 @@ output "ecs_service_name" {
   value       = module.ecs_service.name
 }
 
+output "ecs_task_definition_arn" {
+  description = "ARN of the ECS task definition"
+  value       = aws_ecs_task_definition.nodejs_app.arn
+}
+
 output "application_url" {
   description = "URL to access the application"
   value       = "http://${aws_lb.main.dns_name}"

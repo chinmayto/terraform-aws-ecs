@@ -76,7 +76,7 @@ resource "aws_iam_role" "ecs_task_role" {
 ################################################################################
 resource "aws_cloudwatch_log_group" "ecs_logs" {
   name              = "/ecs/${var.project_name}"
-  retention_in_days = 7
+  retention_in_days = var.log_retention_days
 
   tags = var.common_tags
 }

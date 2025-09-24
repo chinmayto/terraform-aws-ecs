@@ -31,8 +31,8 @@ resource "aws_ecs_task_definition" "nodejs_app" {
   family                   = "${var.project_name}-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = tostring(var.task_cpu)
+  memory                   = tostring(var.task_memory)
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
 
@@ -85,13 +85,12 @@ module "ecs_service" {
   name        = "${var.project_name}-service"
   cluster_arn = module.ecs_cluster.arn
 
-  cpu    = 256
-  memory = 512
-
-  # Auto Scaling Configuration
+  # Use the separate task definition
+  task_definition_arn            = aws_ecs_task_definition.nodejs_app.arn
   desired_count                  = var.min_capacity
   ignore_task_definition_changes = false
   force_new_deployment           = true
+  create_task_definition         = false
 
   # Built-in Auto Scaling
   autoscaling_min_capacity = var.min_capacity
@@ -119,40 +118,6 @@ module "ecs_service" {
         scale_in_cooldown  = var.scale_in_cooldown
         scale_out_cooldown = var.scale_out_cooldown
       }
-    }
-  }
-
-  # Container definition(s)
-  container_definitions = {
-    nodejs-app = {
-      image = var.ecr_repository_url
-      port_mappings = [
-        {
-          name          = "nodejs-app"
-          containerPort = var.app_port
-          protocol      = "tcp"
-        }
-      ]
-
-      log_configuration = {
-        logDriver = "awslogs"
-        options = {
-          awslogs-group         = aws_cloudwatch_log_group.ecs_logs.name
-          awslogs-region        = var.aws_region
-          awslogs-stream-prefix = "ecs"
-        }
-      }
-
-      environment = [
-        {
-          name  = "NODE_ENV"
-          value = "production"
-        },
-        {
-          name  = "PORT"
-          value = var.app_port
-        }
-      ]
     }
   }
 

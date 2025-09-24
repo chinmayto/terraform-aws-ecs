@@ -100,4 +100,25 @@ variable "scale_out_cooldown" {
   description = "Cooldown period (in seconds) for scale out operations"
   type        = number
   default     = 300
+} #########
+#######################################################################
+# Task Definition Variables
+################################################################################
+
+variable "task_cpu" {
+  description = "CPU units for the task (256, 512, 1024, 2048, 4096)"
+  type        = number
+  default     = 256
+}
+
+variable "task_memory" {
+  description = "Memory (MB) for the task"
+  type        = number
+  default     = 512
+}
+
+variable "log_retention_days" {
+  description = "CloudWatch log retention in days"
+  type        = number
+  default     = 7
 }
