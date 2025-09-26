@@ -37,7 +37,7 @@ variable "public_subnets" {
 variable "ecr_repository_url" {
   description = "ECR repository URL for the Node.js app"
   type        = string
-  default     = "public.ecr.aws/n4o6g6h8/simple-nodejs-app-1:latest"
+  default     = "public.ecr.aws/n4o6g6h8/simple-nodejs-app:latest"
 }
 
 variable "app_port" {
